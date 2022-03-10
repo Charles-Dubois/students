@@ -8,16 +8,12 @@ export default function App() {
   const handleChange = (myEvent) => {
     setStudents(myEvent.target.value);
   };
+
   useEffect(() => {
     axios
       .get("http://localhost:8000/students")
-      .then((res) => setStudentsAPI(res.data));
+      .then((res) => setStudentsAPI(res));
   }, []);
-  const checkStudent = studentsAPI.find((student) => {
-    if (student.name === students) {
-      return true;
-    }
-  });
 
   const handleClick = () => {
     axios.post("http://localhost:8000/students", {
@@ -27,12 +23,13 @@ export default function App() {
 
   const renderList = () => {
     console.log(studentsAPI);
-    return studentsAPI.length > 0 ? (
-      studentsAPI.map((res, i) => <li key={i}>{res.name}</li>)
+    return studentsAPI.data ? (
+      studentsAPI.data.map((res, i) => <li key={i}>{res.name}</li>)
     ) : (
       <h2>Liste vide</h2>
     );
   };
+
   return (
     <div>
       <ul>{renderList()}</ul>
