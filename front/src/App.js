@@ -9,31 +9,43 @@ export default function App() {
     setStudents(myEvent.target.value);
   };
 
-  useEffect(() => {
+  function onMount() {
     axios
       .get("http://localhost:8000/students")
-      .then((res) => setStudentsAPI(res));
+
+      .then((res) => setStudentsAPI(res))
+      .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    onMount();
   }, []);
 
   const handleClick = () => {
-    axios.post("http://localhost:8000/students", {
-      name: `${students}`,
-    });
+    axios
+      .post("http://localhost:8000/students", {
+        name: `${students}`,
+      })
+      .catch((err) =>
+        alert(`${err}\nDescription : this student already exists`)
+      );
+    onMount();
   };
 
   const renderList = () => {
-    console.log(studentsAPI);
     return studentsAPI.data ? (
       studentsAPI.data.map((res, i) => <li key={i}>{res.name}</li>)
     ) : (
       <h2>Liste vide</h2>
     );
   };
+  const onSubmit = (event) => {
+    event.preventDefault("don't refresh");
+  };
 
   return (
     <div>
       <ul>{renderList()}</ul>
-      <form>
+      <form onSubmit={(e) => onSubmit(e)}>
         <input type="text" onChange={(e) => handleChange(e)} />
         <button onClick={() => handleClick()}>Click</button>
       </form>

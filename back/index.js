@@ -33,14 +33,12 @@ app.post("/students", (req, res) => {
   const checkStudents = students.find((student) => {
     return student.name === req.body.name;
   });
-
   if (checkStudents) {
     return res.status(400).json({
       error: `Error 400 bad request`,
       message: `student ${req.body.name} alreay exist !`,
     });
   } else {
-    console.log(checkStudents, req.body.name);
     students.push(req.body);
     res.json({
       message: `student ${req.body.name} added !`,
