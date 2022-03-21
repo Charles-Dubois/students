@@ -38,14 +38,11 @@ export default function App() {
       <h2>Liste vide</h2>
     );
   };
-  const onSubmit = (event) => {
-    event.preventDefault("don't refresh");
-  };
 
   return (
     <div>
       <ul>{renderList()}</ul>
-      <form onSubmit={(e) => onSubmit(e)}>
+      <form>
         <input type="text" onChange={(e) => handleChange(e)} />
         <button onClick={() => handleClick()}>Click</button>
       </form>
